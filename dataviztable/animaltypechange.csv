@@ -1,0 +1,17 @@
+Species Type,Event year,Count of animals
+Domestic,2018,43.0
+Domestic,2019,129.0
+Domestic,2020,219.0
+Domestic,2021,77.0
+Exotic,2018,2.0
+Exotic,2019,8.0
+Exotic,2020,10.0
+Exotic,2021,11.0
+Invasive,2018,9.0
+Invasive,2019,33.0
+Invasive,2020,60.0
+Invasive,2021,31.0
+Native,2018,561.0
+Native,2019,661.0
+Native,2020,1484.0
+Native,2021,430.0

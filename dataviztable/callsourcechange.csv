@@ -1,0 +1,83 @@
+,Species Type,Event year,Call Source,Count of animals
+0,Domestic,2018,Central,11
+1,Domestic,2018,"Conservancies/""Friends of"" Groups",1
+2,Domestic,2018,Employee,18
+3,Domestic,2018,Public,7
+4,Domestic,2019,Central,17
+5,Domestic,2019,"Conservancies/""Friends of"" Groups",5
+6,Domestic,2019,Employee,36
+7,Domestic,2019,Observed by Ranger,11
+8,Domestic,2019,Other,8
+9,Domestic,2019,Public,16
+10,Domestic,2020,Central,27
+11,Domestic,2020,"Conservancies/""Friends of"" Groups",5
+12,Domestic,2020,Employee,44
+13,Domestic,2020,Observed by Ranger,15
+14,Domestic,2020,Other,4
+15,Domestic,2020,Public,33
+16,Domestic,2021,Central,28
+17,Domestic,2021,"Conservancies/""Friends of"" Groups",3
+18,Domestic,2021,Employee,20
+19,Domestic,2021,Observed by Ranger,4
+20,Domestic,2021,Other,1
+21,Domestic,2021,Public,15
+22,Exotic,2018,Central,2
+23,Exotic,2018,"Conservancies/""Friends of"" Groups",1
+24,Exotic,2018,Employee,2
+25,Exotic,2018,Public,3
+26,Exotic,2019,"Conservancies/""Friends of"" Groups",2
+27,Exotic,2019,Employee,5
+28,Exotic,2019,Observed by Ranger,1
+29,Exotic,2019,Public,5
+30,Exotic,2020,Central,3
+31,Exotic,2020,"Conservancies/""Friends of"" Groups",2
+32,Exotic,2020,Employee,9
+33,Exotic,2020,Public,3
+34,Exotic,2021,Employee,6
+35,Exotic,2021,Other,1
+36,Exotic,2021,Public,1
+37,Invasive,2018,Central,3
+38,Invasive,2018,"Conservancies/""Friends of"" Groups",1
+39,Invasive,2018,Employee,4
+40,Invasive,2018,Public,4
+41,Invasive,2019,Central,8
+42,Invasive,2019,"Conservancies/""Friends of"" Groups",3
+43,Invasive,2019,Employee,9
+44,Invasive,2019,Observed by Ranger,3
+45,Invasive,2019,Other,2
+46,Invasive,2019,Public,10
+47,Invasive,2020,Central,2
+48,Invasive,2020,"Conservancies/""Friends of"" Groups",7
+49,Invasive,2020,Employee,6
+50,Invasive,2020,Observed by Ranger,2
+51,Invasive,2020,Other,4
+52,Invasive,2020,Public,22
+53,Invasive,2021,Central,7
+54,Invasive,2021,Employee,4
+55,Invasive,2021,Observed by Ranger,1
+56,Invasive,2021,Other,1
+57,Invasive,2021,Public,12
+58,Native,2018,Central,99
+59,Native,2018,"Conservancies/""Friends of"" Groups",255
+60,Native,2018,Employee,156
+61,Native,2018,Observed by Ranger,12
+62,Native,2018,Other,35
+63,Native,2018,Public,81
+64,Native,2019,Central,96
+65,Native,2019,"Conservancies/""Friends of"" Groups",50
+66,Native,2019,Employee,163
+67,Native,2019,Observed by Ranger,33
+68,Native,2019,Other,23
+69,Native,2019,Public,121
+70,Native,2020,Central,128
+71,Native,2020,"Conservancies/""Friends of"" Groups",41
+72,Native,2020,Employee,221
+73,Native,2020,Observed by Ranger,44
+74,Native,2020,Other,21
+75,Native,2020,Public,169
+76,Native,2021,Central,95
+77,Native,2021,"Conservancies/""Friends of"" Groups",26
+78,Native,2021,Employee,116
+79,Native,2021,Observed by Ranger,31
+80,Native,2021,Other,5
+81,Native,2021,Public,78

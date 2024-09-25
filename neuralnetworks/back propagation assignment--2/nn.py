@@ -1,3 +1,9 @@
+#!/usr/bin/env python
+# coding: utf-8
+
+# In[1]:
+
+
 # -*- coding: utf-8 -*-
 """nn.ipynb
 
@@ -166,3 +172,4 @@ class SimpleNetwork:
         for _ in range(iterations):
             gradients = self.gradients(input_matrix, output_matrix)
             self.layer_weights = [w - learning_rate * g for w, g in zip(self.layer_weights, gradients)]
+

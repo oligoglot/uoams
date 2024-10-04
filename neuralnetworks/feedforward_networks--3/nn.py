@@ -1,3 +1,9 @@
+#!/usr/bin/env python
+# coding: utf-8
+
+# In[2]:
+
+
 """
 The main code for the feedforward networks assignment.
 See README.md for details.
@@ -121,3 +127,10 @@ Dict]:
     late_fit_kwargs = {}
 
     return early_model, early_fit_kwargs, late_model, late_fit_kwargs
+
+
+# In[ ]:
+
+
+
+

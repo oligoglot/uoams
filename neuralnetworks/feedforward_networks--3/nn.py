@@ -11,7 +11,7 @@ def create_auto_mpg_deep_and_wide_networks(n_inputs: int, n_outputs: int):
 
     # Wide network
     wide_model = tf.keras.Sequential([
-        tf.keras.layers.Dense(64, activation='relu', input_shape=(n_inputs,)),
+        tf.keras.layers.Dense(48, activation='relu', input_shape=(n_inputs,)),
         tf.keras.layers.Dense(n_outputs)
     ])
 
@@ -26,9 +26,13 @@ def create_activity_dropout_and_nodropout_networks(n_inputs: int, n_outputs: int
         ])
 
     # Model with dropout
-    dropout_model = create_base_model()
-    dropout_model.layers.insert(1, tf.keras.layers.Dropout(0.3))
-    dropout_model.layers.insert(3, tf.keras.layers.Dropout(0.3))
+    dropout_model = tf.keras.Sequential([
+        tf.keras.layers.Dense(64, activation='relu', input_shape=(n_inputs,)),
+        tf.keras.layers.Dropout(0.3),
+        tf.keras.layers.Dense(32, activation='relu'),
+        tf.keras.layers.Dropout(0.3),
+        tf.keras.layers.Dense(n_outputs, activation='softmax')
+    ])
 
     # Model without dropout
     no_dropout_model = create_base_model()

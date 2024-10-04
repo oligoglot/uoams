@@ -2,13 +2,12 @@
 The main code for the feedforward networks assignment.
 See README.md for details.
 """
+
 from typing import Tuple, Dict
 import tensorflow as tf
-from tensorflow import keras
 
 def create_auto_mpg_deep_and_wide_networks(
-        n_inputs: int, n_outputs: int) -> Tuple[keras.models.Model,
-keras.models.Model]:
+        n_inputs: int, n_outputs: int) -> Tuple[tf.keras.models.Model, tf.keras.models.Model]:
     """Creates one deep neural network and one wide neural network.
     The networks should have the same (or very close to the same) number of
     parameters and the same activation functions.
@@ -22,28 +21,25 @@ keras.models.Model]:
     :param n_outputs: The number of outputs from the models.
     :return: A tuple of (deep neural network, wide neural network)
     """
-
     # Deep network
-    deep_model = keras.models.Sequential([
-        keras.layers.Dense(64, activation='relu', input_shape=(n_inputs,)),
-        keras.layers.Dense(32, activation='relu'),
-        keras.layers.Dense(16, activation='relu'),
-        keras.layers.Dense(8, activation='relu'),
-        keras.layers.Dense(n_outputs)
+    deep_model = tf.keras.Sequential([
+        tf.keras.layers.Dense(16, activation='relu', input_shape=(n_inputs,)),
+        tf.keras.layers.Dense(16, activation='relu'),
+        tf.keras.layers.Dense(16, activation='relu'),
+        tf.keras.layers.Dense(n_outputs)
     ])
 
     # Wide network
-    wide_model = keras.models.Sequential([
-        keras.layers.Dense(128, activation='relu', input_shape=(n_inputs,)),
-        keras.layers.Dense(n_outputs)
+    wide_model = tf.keras.Sequential([
+        tf.keras.layers.Dense(64, activation='relu', input_shape=(n_inputs,)),
+        tf.keras.layers.Dense(n_outputs)
     ])
 
     return deep_model, wide_model
 
-
 def create_activity_dropout_and_nodropout_networks(
-        n_inputs: int, n_outputs: int) -> Tuple[keras.models.Model,
-keras.models.Model]:
+        n_inputs: int, n_outputs: int) -> Tuple[tf.keras.models.Model,
+tf.keras.models.Model]:
     """Creates one neural network with dropout applied after each layer, and
     one neural network without dropout. The networks should be identical other
     than the presence or absence of dropout.
@@ -57,31 +53,27 @@ keras.models.Model]:
     :param n_outputs: The number of outputs from the models.
     :return: A tuple of (dropout neural network, no-dropout neural network)
     """
-
     def create_base_model():
-        return keras.models.Sequential([
-            keras.layers.Dense(128, activation='relu', input_shape=(n_inputs,)),
-            keras.layers.Dense(64, activation='relu'),
-            keras.layers.Dense(32, activation='relu'),
-            keras.layers.Dense(n_outputs, activation='softmax')
+        return tf.keras.Sequential([
+            tf.keras.layers.Dense(64, activation='relu', input_shape=(n_inputs,)),
+            tf.keras.layers.Dense(32, activation='relu'),
+            tf.keras.layers.Dense(n_outputs, activation='softmax')
         ])
 
     # Model with dropout
     dropout_model = create_base_model()
-    dropout_model.layers.insert(1, keras.layers.Dropout(0.3))
-    dropout_model.layers.insert(3, keras.layers.Dropout(0.3))
-    dropout_model.layers.insert(5, keras.layers.Dropout(0.3))
+    dropout_model.layers.insert(1, tf.keras.layers.Dropout(0.3))
+    dropout_model.layers.insert(3, tf.keras.layers.Dropout(0.3))
 
     # Model without dropout
     no_dropout_model = create_base_model()
 
     return dropout_model, no_dropout_model
 
-
 def create_income_earlystopping_and_noearlystopping_networks(
-        n_inputs: int, n_outputs: int) -> Tuple[keras.models.Model,
+        n_inputs: int, n_outputs: int) -> Tuple[tf.keras.models.Model,
 Dict,
-keras.models.Model,
+tf.keras.models.Model,
 Dict]:
     """Creates one neural network that uses early stopping during training, and
     one that does not. The networks should be identical other than the presence
@@ -101,32 +93,20 @@ Dict]:
         no-early-stopping parameters that should be passed to Model.fit
     )
     """
-
-    def create_base_model():
-        return keras.models.Sequential([
-            keras.layers.Dense(64, activation='relu', input_shape=(n_inputs,)),
-            keras.layers.Dense(32, activation='relu'),
-            keras.layers.Dense(16, activation='relu'),
-            keras.layers.Dense(n_outputs, activation='sigmoid')
+    def create_model():
+        return tf.keras.Sequential([
+            tf.keras.layers.Dense(64, activation='relu', input_shape=(n_inputs,)),
+            tf.keras.layers.Dense(32, activation='relu'),
+            tf.keras.layers.Dense(n_outputs, activation='sigmoid')
         ])
 
-    # Model with early stopping
-    early_stopping_model = create_base_model()
+    early_model = create_model()
+    late_model = create_model()
 
-    early_stopping_params = {
-        'callbacks': [
-            keras.callbacks.EarlyStopping(
-                monitor='val_loss',
-                patience=5,
-                restore_best_weights=True
-            )
-        ],
+    early_fit_kwargs = {
+        'callbacks': [tf.keras.callbacks.EarlyStopping(patience=5, restore_best_weights=True)],
         'validation_split': 0.2
     }
+    late_fit_kwargs = {}
 
-    # Model without early stopping
-    no_early_stopping_model = create_base_model()
-
-    no_early_stopping_params = {}
-
-    return early_stopping_model, early_stopping_params, no_early_stopping_model, no_early_stopping_params
+    return early_model, early_fit_kwargs, late_model, late_fit_kwargs

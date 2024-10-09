@@ -1,3 +1,9 @@
+#!/usr/bin/env python
+# coding: utf-8
+
+# In[2]:
+
+
 """
 The main code for the recurrent and convolutional networks assignment.
 
@@ -62,17 +68,26 @@ def create_mnist_cnn(input_shape: tuple, n_outputs: int) \
     :param n_outputs: The number of outputs from the model.
     :return: A tuple of (neural network, Model.fit keyword arguments)
     """
+    # Check for GPU availability
+    if len(tensorflow.config.list_physical_devices('GPU')) > 0:
+        # GPU is available, use float32
+        tensorflow.keras.backend.set_floatx('float32')
+    else:
+        # No GPU, use float64
+        tensorflow.keras.backend.set_floatx('float64')
+
     model = tensorflow.keras.models.Sequential([
         tensorflow.keras.layers.Conv2D(32, (3, 3), activation='relu', input_shape=input_shape),
-        tensorflow.keras.layers.BatchNormalization(),
+        tensorflow.keras.layers.MaxPool2D((2, 2)),
+        tensorflow.keras.layers.Conv2D(64, (3, 3), activation='relu'),
         tensorflow.keras.layers.MaxPool2D((2, 2)),
         tensorflow.keras.layers.Flatten(),
         tensorflow.keras.layers.Dense(64, activation='relu'),
         tensorflow.keras.layers.Dense(n_outputs, activation='softmax')
     ])
 
-    model.compile(optimizer='adam',
-                  loss='sparse_categorical_crossentropy',
+    model.compile(optimizer=tensorflow.keras.optimizers.Adam(learning_rate=0.001),
+                  loss='categorical_crossentropy',
                   metrics=['accuracy'])
 
     fit_kwargs = {
@@ -85,6 +100,7 @@ def create_mnist_cnn(input_shape: tuple, n_outputs: int) \
     }
 
     return model, fit_kwargs
+
 
 def create_youtube_comment_rnn(vocabulary: List[str], n_outputs: int) \
         -> Tuple[tensorflow.keras.models.Model, Dict]:
@@ -171,3 +187,10 @@ def create_youtube_comment_cnn(vocabulary: List[str], n_outputs: int) \
     }
 
     return model, fit_kwargs
+
+
+# In[ ]:
+
+
+
+

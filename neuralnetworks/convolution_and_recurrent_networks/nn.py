@@ -1,12 +1,12 @@
-
 """
 The main code for the recurrent and convolutional networks assignment.
+
 See README.md for details.
 """
+
 from typing import Tuple, List, Dict
 
 import tensorflow
-
 
 def create_toy_rnn(input_shape: tuple, n_outputs: int) \
         -> Tuple[tensorflow.keras.models.Model, Dict]:
@@ -24,7 +24,22 @@ def create_toy_rnn(input_shape: tuple, n_outputs: int) \
     :param n_outputs: The number of outputs from the model.
     :return: A tuple of (neural network, Model.fit keyword arguments)
     """
-    ### YOUR CODE HERE ###
+    model = tensorflow.keras.models.Sequential([
+        tensorflow.keras.layers.SimpleRNN(64, input_shape=input_shape, activation='relu'),
+        tensorflow.keras.layers.Dense(32, activation='relu'),
+        tensorflow.keras.layers.Dense(n_outputs)
+    ])
+
+    model.compile(optimizer='adam', loss='mse', metrics=['mae'])
+
+    fit_kwargs = {
+        'batch_size': 32,
+        'epochs': 100,
+        'validation_split': 0.2,
+        'callbacks': [tensorflow.keras.callbacks.EarlyStopping(patience=5)]
+    }
+
+    return model, fit_kwargs
 
 def create_mnist_cnn(input_shape: tuple, n_outputs: int) \
         -> Tuple[tensorflow.keras.models.Model, Dict]:
@@ -42,7 +57,26 @@ def create_mnist_cnn(input_shape: tuple, n_outputs: int) \
     :param n_outputs: The number of outputs from the model.
     :return: A tuple of (neural network, Model.fit keyword arguments)
     """
-    ### YOUR CODE HERE ###
+    model = tensorflow.keras.models.Sequential([
+        tensorflow.keras.layers.Conv2D(32, (3, 3), activation='relu', input_shape=input_shape),
+        tensorflow.keras.layers.MaxPool2D((2, 2)),
+        tensorflow.keras.layers.Conv2D(64, (3, 3), activation='relu'),
+        tensorflow.keras.layers.MaxPool2D((2, 2)),
+        tensorflow.keras.layers.Flatten(),
+        tensorflow.keras.layers.Dense(64, activation='relu'),
+        tensorflow.keras.layers.Dense(n_outputs, activation='softmax')
+    ])
+
+    model.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
+
+    fit_kwargs = {
+        'batch_size': 64,
+        'epochs': 20,
+        'validation_split': 0.2,
+        'callbacks': [tensorflow.keras.callbacks.EarlyStopping(patience=3)]
+    }
+
+    return model, fit_kwargs
 
 def create_youtube_comment_rnn(vocabulary: List[str], n_outputs: int) \
         -> Tuple[tensorflow.keras.models.Model, Dict]:
@@ -66,7 +100,26 @@ def create_youtube_comment_rnn(vocabulary: List[str], n_outputs: int) \
     :param n_outputs: The number of outputs from the model.
     :return: A tuple of (neural network, Model.fit keyword arguments)
     """
-    ### YOUR CODE HERE ###
+    vocab_size = len(vocabulary)
+
+    model = tensorflow.keras.models.Sequential([
+        tensorflow.keras.layers.Embedding(vocab_size, 100, input_length=None),
+        tensorflow.keras.layers.Bidirectional(tensorflow.keras.layers.LSTM(64, return_sequences=True)),
+        tensorflow.keras.layers.Bidirectional(tensorflow.keras.layers.LSTM(32)),
+        tensorflow.keras.layers.Dense(16, activation='relu'),
+        tensorflow.keras.layers.Dense(n_outputs, activation='sigmoid')
+    ])
+
+    model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
+
+    fit_kwargs = {
+        'batch_size': 32,
+        'epochs': 10,
+        'validation_split': 0.2,
+        'callbacks': [tensorflow.keras.callbacks.EarlyStopping(patience=2)]
+    }
+
+    return model, fit_kwargs
 
 def create_youtube_comment_cnn(vocabulary: List[str], n_outputs: int) \
         -> Tuple[tensorflow.keras.models.Model, Dict]:
@@ -90,4 +143,23 @@ def create_youtube_comment_cnn(vocabulary: List[str], n_outputs: int) \
     :param n_outputs: The number of outputs from the model.
     :return: A tuple of (neural network, Model.fit keyword arguments)
     """
-    ### YOUR CODE HERE ###
+    vocab_size = len(vocabulary)
+
+    model = tensorflow.keras.models.Sequential([
+        tensorflow.keras.layers.Embedding(vocab_size, 100, input_length=None),
+        tensorflow.keras.layers.Conv1D(128, 5, activation='relu'),
+        tensorflow.keras.layers.GlobalMaxPool1D(),
+        tensorflow.keras.layers.Dense(64, activation='relu'),
+        tensorflow.keras.layers.Dense(n_outputs, activation='sigmoid')
+    ])
+
+    model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
+
+    fit_kwargs = {
+        'batch_size': 64,
+        'epochs': 10,
+        'validation_split': 0.2,
+        'callbacks': [tensorflow.keras.callbacks.EarlyStopping(patience=2)]
+    }
+
+    return model, fit_kwargs

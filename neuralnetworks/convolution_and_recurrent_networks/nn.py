@@ -25,21 +25,29 @@ def create_toy_rnn(input_shape: tuple, n_outputs: int) \
     :return: A tuple of (neural network, Model.fit keyword arguments)
     """
     model = tensorflow.keras.models.Sequential([
-        tensorflow.keras.layers.SimpleRNN(64, input_shape=input_shape, activation='relu'),
-        tensorflow.keras.layers.Dense(32, activation='relu'),
+        tensorflow.keras.layers.LSTM(128, input_shape=input_shape, return_sequences=True),
+        tensorflow.keras.layers.LSTM(64, return_sequences=True),
+        tensorflow.keras.layers.LSTM(32, return_sequences=True),
+        tensorflow.keras.layers.Dense(16, activation='relu'),
         tensorflow.keras.layers.Dense(n_outputs)
     ])
 
-    model.compile(optimizer='adam', loss='mse', metrics=['mae'])
+    model.compile(optimizer=tensorflow.keras.optimizers.Adam(learning_rate=0.001),
+                  loss='mse',
+                  metrics=['mae'])
 
     fit_kwargs = {
         'batch_size': 32,
-        'epochs': 100,
+        'epochs': 300,
         'validation_split': 0.2,
-        'callbacks': [tensorflow.keras.callbacks.EarlyStopping(patience=5)]
+        'callbacks': [
+            tensorflow.keras.callbacks.EarlyStopping(patience=30, restore_best_weights=True),
+            tensorflow.keras.callbacks.ReduceLROnPlateau(factor=0.5, patience=10, min_lr=1e-5)
+        ]
     }
 
     return model, fit_kwargs
+
 
 def create_mnist_cnn(input_shape: tuple, n_outputs: int) \
         -> Tuple[tensorflow.keras.models.Model, Dict]:
@@ -59,21 +67,29 @@ def create_mnist_cnn(input_shape: tuple, n_outputs: int) \
     """
     model = tensorflow.keras.models.Sequential([
         tensorflow.keras.layers.Conv2D(32, (3, 3), activation='relu', input_shape=input_shape),
+        tensorflow.keras.layers.BatchNormalization(),
         tensorflow.keras.layers.MaxPool2D((2, 2)),
         tensorflow.keras.layers.Conv2D(64, (3, 3), activation='relu'),
+        tensorflow.keras.layers.BatchNormalization(),
         tensorflow.keras.layers.MaxPool2D((2, 2)),
         tensorflow.keras.layers.Flatten(),
-        tensorflow.keras.layers.Dense(64, activation='relu'),
+        tensorflow.keras.layers.Dense(128, activation='relu'),
+        tensorflow.keras.layers.Dropout(0.3),
         tensorflow.keras.layers.Dense(n_outputs, activation='softmax')
     ])
 
-    model.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
+    model.compile(optimizer=tensorflow.keras.optimizers.Adam(learning_rate=0.001),
+                  loss='sparse_categorical_crossentropy',
+                  metrics=['accuracy'])
 
     fit_kwargs = {
-        'batch_size': 64,
-        'epochs': 20,
+        'batch_size': 32,
+        'epochs': 50,
         'validation_split': 0.2,
-        'callbacks': [tensorflow.keras.callbacks.EarlyStopping(patience=3)]
+        'callbacks': [
+            tensorflow.keras.callbacks.EarlyStopping(patience=10, restore_best_weights=True),
+            tensorflow.keras.callbacks.ReduceLROnPlateau(factor=0.5, patience=5, min_lr=1e-5)
+        ]
     }
 
     return model, fit_kwargs
